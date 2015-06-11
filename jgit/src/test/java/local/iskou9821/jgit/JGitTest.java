@@ -8,6 +8,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.junit.Before;
 import org.junit.Test;
@@ -137,12 +138,22 @@ public class JGitTest {
 	}
 
 	@Test
-	public void pushする() throws IOException, GitAPIException {
+	public void 同名でブランチをpushする() throws IOException, GitAPIException {
 		Git git = Git.open(new File(dir));
-
+		Ref ref = git.getRepository().getRef("test"); //ローカルに存在するブランチ名
 		git.push().setCredentialsProvider(cred())
-				.setRemote("origin") //pushする先を指定
-				.add(git.getRepository().getRef("test")) //pushする先のブランチを指定
+				.setRemote("origin")
+				.add(ref)
+				.call();
+	}
+
+	@Test
+	public void 異なる名前でブランチをpushする() throws IOException, GitAPIException {
+		RefSpec spec = new RefSpec("test2:sample2"); //ローカルブランチ名:リモートブランチ名
+		Git.open(new File(dir))
+				.push().setCredentialsProvider(cred())
+				.setRemote("origin")
+				.setRefSpecs(spec)
 				.call();
 	}
 
