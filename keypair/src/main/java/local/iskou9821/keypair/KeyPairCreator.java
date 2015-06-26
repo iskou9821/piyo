@@ -24,6 +24,14 @@ public class KeyPairCreator {
 		saveFile(keyPair.getPublic().getEncoded(), publicKeyPath);
 	}
 
+	public static void saveKeyPairWithPassword(KeyPair keyPair,
+							String privateKeyPath, String publicKeyPath,
+								   char[] privKeyPassword, byte[] salt, int iteration) throws IOException {
+		byte[] enc = PasswordCrypter.encrypt(keyPair.getPrivate().getEncoded(), salt, iteration, privKeyPassword);
+		saveFile(enc, privateKeyPath);
+		saveFile(keyPair.getPublic().getEncoded(), publicKeyPath);
+	}
+
 	private static void saveFile(byte[] file, String path) throws IOException {
 		try (FileOutputStream fout = new FileOutputStream(path)) {
 			fout.write(file);
