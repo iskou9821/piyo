@@ -1,0 +1,24 @@
+apply plugin:'java'
+apply plugin:'eclipse'
+
+sourceCompatibility='1.8'
+targetCompatibility='1.8'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://download.java.net/maven/2"
+    }
+}
+
+dependencies {
+  compile 'com.google.guava:guava:18.0',
+          'javax.mail:javax.mail-api:1.5.3',
+          'com.sun.mail:javax.mail:1.5.3'
+
+  testCompile 'junit:junit:4.12'
+}
+
+compileJava {
+  options.encoding='UTF-8'
+}
